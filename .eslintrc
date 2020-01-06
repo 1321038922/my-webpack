@@ -1,0 +1,9 @@
+{
+  "extends": "standard",
+  "rules": {
+    "no-new": "off"
+  },
+  "parserOptions":{
+    "parser": "babel-eslint"
+  }
+}
