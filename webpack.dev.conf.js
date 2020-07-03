@@ -7,31 +7,8 @@ var FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 var TransferWebpackPlugin = require('transfer-webpack-plugin');
 var portfinder = require('portfinder');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-// var CleanWebpackPlugin = require('clean-webpack-plugin');
-// var ports = fs.readFileSync('./port.json', 'utf8');
-var hostAddress = 'localhost'
-// ports = JSON.parse(ports);
-portfinder.basePort = "3123";
-// portfinder.getPort(function (err, port) {
-// 	ports.data.port = port;
-// 	ports = JSON.stringify(ports, null, 4);
-// 	fs.writeFileSync('./port.json', ports);
-// 	portfinder.basePort = ports
-// });
-// ///////////////////获取本机ip///////////////////////
-// function getIPAdress() {
-// 	var interfaces = os.networkInterfaces();
-// 	for (var devName in interfaces) {
-// 		var iface = interfaces[devName];
-// 		for (var i = 0; i < iface.length; i++) {
-// 			var alias = iface[i];
-// 			if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
-// 				return alias.address;
-// 			}
-// 		}
-// 	}
-// }
-// var host = getIPAdress();
+var hostAddress = 'localhost';
+portfinder.basePort = "8110";
 //动态添加入口
 function getEntry() {
 	var entry = {};
@@ -60,6 +37,7 @@ var getHtmlConfig = function (name, chunks) {
 	}
 }
 module.exports = {
+	mode: "development",
 	entry: getEntry(),
 	output: {
 		path: path.resolve(__dirname, 'devdist'),
@@ -138,7 +116,6 @@ module.exports = {
 			},
 		]
 	},
-	mode: "development",
 	performance: {
 		hints: false
 	},
@@ -156,7 +133,7 @@ module.exports = {
 		}),
 		new FriendlyErrorsWebpackPlugin({
 			compilationSuccessInfo: {
-				messages: [`You application is running here http://${hostAddress}:${portfinder.basePort}`]
+				messages: [`请按ctrl + 鼠标左键访问 http://${hostAddress}:${portfinder.basePort}`]
 			}
 		}),
 		new UglifyJSPlugin({
@@ -192,7 +169,7 @@ module.exports = {
 		port: portfinder.basePort,
 		watchContentBase: true,
 		overlay: true,
-		open: true,
+		open: false,
 		// proxy: {
 		// 	"/api": "http://localhost:3000"
 		// }

@@ -23,7 +23,10 @@ function getEntry() {
 		eArr.push(name);
 		entry[n] = eArr;
 	})
+	console.log(entry);
+	
 	return entry;
+
 }
 //动态生成html
 //获取html-webpack-plugin参数的方法
@@ -36,15 +39,14 @@ var getHtmlConfig = function (name, chunks) {
 		// chunks: [name, 'vendor'],
 		chunks: [name],
 		minify: {
-			removeComments: false, // 改为false
-			collapseWhitespace: false, // 改为false
-			removeAttributeQuotes: false // 改为false
-			// more options:
-			// https://github.com/kangax/html-minifier#options-quick-reference
+			removeComments: true, // 是否删除html注释
+			collapseWhitespace: false, // 是否折叠有助于文档树中文本节点的空白
+			removeAttributeQuotes: false // 尽可能删除属性周围的引号
 		},
 	}
 }
 module.exports = {
+	mode: "production",
 	entry: getEntry(),
 	output: {
 		path: path.resolve(__dirname, 'dist'),
@@ -61,7 +63,7 @@ module.exports = {
 					{
 						loader: 'babel-loader',
 						options: {
-							presets: ['@babel/preset-env',],
+							presets: ['@babel/preset-env'],
 							plugins: [
 								['@babel/transform-runtime'],
 								['@babel/plugin-transform-modules-commonjs']
@@ -78,10 +80,6 @@ module.exports = {
 					loader: "postcss-loader",
 					options: {
 						plugins: [
-							// require('autoprefixer')
-							// autoprefixer({
-							// 	browsers: ['ie >= 8', 'Firefox >= 20', 'Safari >= 5', 'Android >= 4', 'Ios >= 6', 'last 4 version']
-							// })
 						]
 					}
 				}]
@@ -93,12 +91,6 @@ module.exports = {
 				use: [MiniCssExtractPlugin.loader, "css-loader", {
 					loader: "postcss-loader",
 					options: {
-						plugins: [
-							// require('autoprefixer')
-							// autoprefixer({
-							// 	browsers: ['ie >= 8', 'Firefox >= 20', 'Safari >= 5', 'Android >= 4', 'Ios >= 6', 'last 4 version']
-							// })
-						]
 					}
 				}, "sass-loader"]
 			},
@@ -130,9 +122,6 @@ module.exports = {
 			}
 		]
 	},
-	// a3850d4a27a8f155a9a5bf6e0e0dc70a
-	// a3850d4a27a8f155a9a5bf6e0e0dc70a
-	mode: "production",
 	performance: {
 		hints: false
 	},
@@ -162,7 +151,10 @@ module.exports = {
 			new UglifyJSPlugin({
 				sourceMap: true,
 				uglifyOptions: {
-					ie8: true
+					ie8: true,
+					compress: {
+							drop_console: true
+					}
 				},
 				// chunkFilter: (chunk) => {
 				//   // Exclude uglification for the `vendor` chunk
